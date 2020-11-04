@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Angka</title>
+    <script src="vue.js"></script>
+    <script src="style.css"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+    <div id="app">
+        <div v-if= "comment=='.'">
+            <h1>{{ randNumb }}</h1>
+            <input type="number" v-model="userInput">
+            <button @click="checkInput()" >Submit ({{ attempt }})</button>
+        </div>
+        <div v-if= "comment == 'greater'">
+            <h2>Your Prediction is Greater !</h2>
+            <input type="number" v-model="userInput">
+            <button @click="checkInput()">Submit ({{ attempt }})</button>
+        </div>
+        <div v-if= "comment == 'less'">
+            <h2>Your Prediction is Less !</h2>
+            <input type="number" v-model="userInput">
+            <button @click="checkInput()">Submit ({{ attempt }})</button>
+        </div>
+        <div v-if= "comment == 'win'">
+            <h2>Congrats !</h2>
+            <p>Your available attempt is {{ attempt }}</p>
+            <button type="button" @click="reload()">Play Again</button>
+        </div>
+        <div v-if= "comment == 'lost'">
+            <h2>You Lost ! </h2>
+            <p>The correct answere is {{ randNumb }}</p>
+            <button type="button" @click="reload()">Play Again</button>
+        </div>
+        <br>
+        <br>
+        <footer>
+            {{ mahasiswa.nama }} | {{ mahasiswa.npm }} | {{ mahasiswa.kelas }}
+        </footer>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            mahasiswa: {
+                nama: "Benedicto Nathanael P",
+                npm: "180709702",
+                kelas: "D",
+            },
+            min: 1, // min range
+            max: 10, // max range
+            randNumb: -1, // output from genetare numb
+            userInput: 0,
+            attempt: 3,
+            comment: '.',
+        },
+        created: function() {
+            this.getRandomNumber()
+        },
+        methods: {
+            loadNumb: function() {
+                this.min = 1; 
+                this.max = 10; 
+                this.getRandomNumber();
+            },
+            getRandomNumber: function() {
+                this.randNumb = this.generateNumber() //get rand numb
+            },
+            generateNumber: function() {
+                return Math.floor(Math.random()*(this.max-this.min+1)+this.min); //rand function
+            },
+            checkInput: function(userInput) {
+                let temp= this.userInput;
+                this.userInput= 0;
+                if(temp>=1 && temp<=10){
+                    --this.attempt;
+                    if(temp == this.randNumb) {
+                        this.comment = "win";
+                    }else{
+                        if(this.attempt==0) {
+                            this.comment = "lost";
+                        }else{
+                            if(temp > this.randNumb) {
+                                this.comment = "greater";
+                            };
+                            if(temp < this.randNumb) {
+                                this.comment = "less";
+                            };
+                        }
+                    };
+                }else{
+                    alert('Prediction number in range 1 to 10');
+                }
+            },
+            reload: function() {
+                this.comment = ".";
+                this.getRandomNumber();
+                this.attempt= 3;
+            }
+            
+        },
+    });
+</script>
+</html>
