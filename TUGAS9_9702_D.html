@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>To do List</title>
+</head>
+<body>
+    <div id="app">
+        <div class="card" style="width: 30rem; margin: auto; margin-top: 5%;">
+            <div class="card-body">
+                <h2 class="card-title text-center">To do List</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <form v-on:submit='addTask'>
+                            <div class="form-group">
+                              <label for="formGroupExampleInput">Nama</label>
+                              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="" v-model='tasks.name'>
+                            </div>
+                            <div class="form-group">
+                                <label for="formGroupExampleInput">Level Prioritas</label>
+                                <select class="form-control">
+                                    <option value="penting">Penting</option>
+                                    <option value="biasa">Biasa</option>
+                                    <option value="tidakPenting">Tidak Penting</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="formGroupExampleInput2">Desripsi</label>
+                              <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" value="Add" style="margin-left: 40%;">Buat Todo</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Selesai</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Opsi</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for='task in tasks'>
+                            <td><input type="checkbox"></td>
+                            <td><span :class="{taskDone: tasks.done}">{{ task.name }}</span></td>
+                            <td>
+                                <button class="btn btn-primary">Tampil</button>
+                                <button class="btn btn-danger">Hapus</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            tasks:[
+                { name: "Masak Air",
+                  priority: "Biasa",
+                  desc: "04.O0 PM, 2 lt" 
+                },
+            ]
+        },
+        methods: {
+            addTask: function(e) {
+                e.preventDefult();
+                this.tasks.push({
+                    name: this.tasks.name
+                })
+            }
+        }
+    });
+</script>
+
+<style>
+    .taskDone {
+        text-decoration: line-through;
+    }
+</style>
+</html>
